@@ -1,0 +1,3 @@
+class Villager < ApplicationRecord
+
+end
