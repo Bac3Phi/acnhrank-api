@@ -7,6 +7,20 @@ class Villagers < Grape::API
       @villagers = Villager.all
       present @villagers, with: VillagerFormat
     end
+
+    desc 'Update 1 con ciu.'
+    params do
+      requires :id, type: String, desc: 'Ciu ID.'
+      requires :voted_type, type: String, desc: 'Ciu Type.'
+    end
+    put ':id' do
+      @villager = Villager.find(params[:id])
+      if params[:voted_type].eql?('up')
+        @villager.increment!(:voted)
+      elsif params[:voted_type].eql?('down')
+        @villager.decrement!(:voted)
+      end
+    end
   end
 
   # resource :products do

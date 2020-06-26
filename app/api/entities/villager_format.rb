@@ -8,4 +8,5 @@ class VillagerFormat < Grape::Entity
   expose :catch_phrase
   expose :personality
   expose :species
+  expose :voted
 end

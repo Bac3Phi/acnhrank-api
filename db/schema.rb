@@ -10,10 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_21_061748) do
+ActiveRecord::Schema.define(version: 2020_06_26_180146) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "villager_details", force: :cascade do |t|
+    t.integer "point"
+    t.bigint "villager_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["villager_id"], name: "index_villager_details_on_villager_id"
+  end
 
   create_table "villagers", force: :cascade do |t|
     t.string "name"
@@ -26,6 +34,8 @@ ActiveRecord::Schema.define(version: 2020_06_21_061748) do
     t.string "species"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "voted", default: 100
   end
 
+  add_foreign_key "villager_details", "villagers"
 end
