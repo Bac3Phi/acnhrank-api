@@ -9,4 +9,5 @@ class VillagerFormat < Grape::Entity
   expose :personality
   expose :species
   expose :voted
+  expose :rank
 end

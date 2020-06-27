@@ -4,7 +4,7 @@ class Villagers < Grape::API
   resource :villagers do
     desc 'Lấy ra những con ciu'
     get do
-      @villagers = Villager.all
+      @villagers = Villager.all.order(:id)
       present @villagers, with: VillagerFormat
     end
 
@@ -23,54 +23,24 @@ class Villagers < Grape::API
     end
   end
 
-  # resource :products do
-  #   desc 'Get list products'
-  #   get do
-  #     @products = Product.all
-  #     present @products, with: Entities::V1::ProductFormat
-  #   end
+  resource :rankings do
+    desc 'Lấy ra Rankings'
+    get do
+      @villagers = Villager.all.order(voted: :DESC).order(updated_at: :DESC)
+      present @villagers, with: VillagerFormat
+    end
 
-  #   desc 'Create product'
-  #   params do
-  #     requires :name, type: String
-  #     requires :quantity, type: Integer
-  #     requires :price, type: Integer
-  #   end
-  #   post do
-  #     @product = Product.create!(params)
-  #     present @product, with: Entities::V1::ProductFormat
-  #   end
+    desc 'Yêu cầu cập nhật rank'
+    put do
+      @villagers = Villager.all.order(voted: :DESC).order(updated_at: :DESC)
 
-  #   route_param :id do
-  #     before do
-  #       @product = Product.find(params[:id])
-  #     end
-
-  #     desc 'Show a product'
-  #     get do
-  #       @product
-  #       present @product, with: Entities::V1::ProductFormat
-  #     end
-
-  #     desc 'Update a product'
-  #     params do
-  #       requires :id, type: Integer
-  #       requires :name, type: String
-  #       requires :quantity, type: Integer
-  #       requires :price, type: Integer
-  #     end
-  #     patch do
-  #       @product.update(params)
-  #       present @product, with: Entities::V1::ProductFormat
-  #     end
-
-  #     desc 'Delete a product'
-  #     params do
-  #       requires :id, type: String
-  #     end
-  #     delete do
-  #       @product.destroy
-  #     end
-  #   end
-  # end
+      @villagers.ssr_rank.update_all(rank: 'SSR')
+      @villagers.s_rank.update_all(rank: 'S')
+      @villagers.a_rank.update_all(rank: 'A')
+      @villagers.b_rank.update_all(rank: 'B')
+      @villagers.c_rank.update_all(rank: 'C')
+      @villagers.d_rank.update_all(rank: 'D')
+      @villagers.f_rank.update_all(rank: 'F')
+    end
+  end
 end
